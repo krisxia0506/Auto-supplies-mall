@@ -1,3 +1,4 @@
+import pymysql
 from django.shortcuts import render, redirect
 from .models import *
 from commodity.models import *
@@ -12,6 +13,7 @@ from django.shortcuts import reverse
 from .form import *
 from .pays_new import get_pay
 import time
+
 
 # def loginView(request):
 #     title = '用户登录'
@@ -106,6 +108,7 @@ def shopperView(request):
         pages = paginator.page(paginator.num_pages)
     return render(request, 'shopper.html', locals())
 
+
 def logoutView(request):
     # 使用内置函数logout退出用户登录状态
     logout(request)
@@ -128,6 +131,7 @@ def shopcartView(request):
     commodityInfos = CommodityInfos.objects.filter(id__in=commodityDcit.keys())
     return render(request, 'shopcart.html', locals())
 
+
 def deleteAPI(request):
     result = {'state': 'success'}
     userId = request.GET.get('userId', '')
@@ -140,9 +144,27 @@ def deleteAPI(request):
         result = {'state': 'fail'}
     return JsonResponse(result)
 
+# 执行sql结算的物品库存减一
+def commoditysql(commodity):
+    connection = pymysql.connect(user='root', password='2547359996', db='car')
+    # 创建游标对象
+    cursor = connection.cursor()
+    # 执行sql语句
+    sql = 'update commodity_commodityinfos set stock = stock-1 where id = %s' % commodity
+    print(sql)
+    cursor.execute(sql)
+    connection.commit()
+    print('ok')
+    cursor.close()
+    connection.close()
+
 
 def paysView(request):
     total = request.GET.get('total', 0)
+    userId = request.user.id
+    commodityId = request.GET.get('commodityId', '')
+
+
     total = float(str(total).replace('￥', ''))
     if total:
         out_trade_no = str(int(time.time()))
@@ -151,7 +173,8 @@ def paysView(request):
         request.session['payTime'] = out_trade_no
         return_url = 'http://' + request.get_host() + '/shopper.html'
         url = get_pay(out_trade_no, total, return_url)
+        for commodity in commodityId.split(','):
+            commoditysql(commodity)
         return redirect(url)
     else:
         return redirect('shopper:shopcart')
-

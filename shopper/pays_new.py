@@ -4,21 +4,17 @@
 # 登录和支付密码：111111
 
 
-
 import logging
 from alipay.aop.api.AlipayClientConfig import AlipayClientConfig
 from alipay.aop.api.DefaultAlipayClient import DefaultAlipayClient
 from alipay.aop.api.domain.AlipayTradePagePayModel import AlipayTradePagePayModel
 from alipay.aop.api.request.AlipayTradePagePayRequest import AlipayTradePagePayRequest
 
-
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s %(levelname)s %(message)s',
-    filemode='a',)
+    filemode='a', )
 logger = logging.getLogger('')
-
-
 
 alipay_public_key_string = """-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgloxDfUNIBgGo+5BcSBdpOM9hoccBgD8MwqD01m8jLXionC3uAZSOEcuI63SjP+WHGsk6HysY+/bokgMeAbx+vmBcscT39+08WBVFy6YDOusydKWeAzJzeRqISbtRCKkHd2KzzWIHQftEB+R9MZKkXVracDZoBXjRLd/Vw/ACuUSZajPAWmA2ddHl+8BB2qs09AVBeeN6XNRL6zoiXEtc0xRboTAjcqJgtGNyyaucERGT9omxK4JzEL2SqYqY6+vabDGaIh4uT+NS2+F6CS90zIjLWO2JUDQ3BtndHELEyHIzAJ8ru/gVKaIHbYnyxnU8L3ForwXKpQfuzwOzrGyvQIDAQAB
@@ -35,6 +31,7 @@ alipay_client_config.app_id = '2021000121601555'
 alipay_client_config.app_private_key = app_private_key_string
 alipay_client_config.alipay_public_key = alipay_public_key_string
 client = DefaultAlipayClient(alipay_client_config=alipay_client_config, logger=logger)
+
 
 def get_pay(out_trade_no, total_amount, return_url):
     model = AlipayTradePagePayModel()

@@ -11,6 +11,7 @@ cursor = connection.cursor()
 def sqldoce(a):
     sql = f"select id,img from commodity_limit5 where firsts='{a}'"
     cursor.execute(sql)
+
     return cursor.fetchall()
 
 
@@ -58,6 +59,9 @@ class indexClassView(TemplateView):
 
         # 车内配件
         context['goods'] = sqldoce('车内配件')
+
+        cursor.close()
+        connection.close()
         return context
 
     # 定义HTTP的GET请求处理方法
@@ -75,3 +79,4 @@ class indexClassView(TemplateView):
         pass
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
+

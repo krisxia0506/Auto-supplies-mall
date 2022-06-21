@@ -69,7 +69,7 @@
                 <a href="javascript:;"><img src="{{ c.img.url }}" alt=""></a>
                 <div class="text">
                   <div class="title">{{ c.name }}</div>
-                  <p><span>{{ c.sezes }}</span></p>
+                  <p><span>{{ c.id }}</span></p>
                 </div>
               </div>
             </li>
@@ -143,7 +143,17 @@
 
     $("#settlement").on('click',function(){
         var total = $(".pieces-total").text()
-        window.location = "{% url 'shopper:pays' %}?total=" + total
+        var userId = $("#userId").text()
+{#    得到购买物品的id#}
+    var commodityId = new Array();
+     {% for c in commodityInfos %}
+         commodityId.push("{{ c.id }}");
+         console.log(commodityId)
+    {% endfor %}
+
+
+
+        window.location = "{% url 'shopper:pays' %}?total=" + total+"&userId="+$("#userId").text()+"&commodityId="+commodityId
     })
 });
 
