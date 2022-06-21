@@ -14,8 +14,6 @@ def sqldoce(a):
     return cursor.fetchall()
 
 
-#
-#
 # def indexView(request):
 #     title = '首页'
 #     classContent = ''
