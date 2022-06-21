@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="data-cont-wrap w1200">
+      <div class="crumb">
+        <a href="{% url 'index:index' %}">首页</a>
+        <span>></span>
+        <a href="{% url 'commodity:commodity' %}">所有商品</a>
+        <span>></span>
+        <a href="javascript:;">产品详情</a>
+      </div>
+      <div class="product-intro layui-clear">
+        <div class="preview-wrap">
+          <img height="300" width="300" src="{{ commoditys.img.url }}">
+        </div>
+        <div class="itemInfo-wrap">
+          <div class="itemInfo">
+            <div class="title">
+              <h4>{{ commoditys.name }}</h4>
+                {% if likes %}
+              <span id="collect"><i class="layui-icon layui-icon-rate-solid"></i>收藏</span>
+                {% else %}
+              <span id="collect"><i class="layui-icon layui-icon-rate"></i>收藏</span>
+                {% endif %}
+            </div>
+            <div class="summary">
+              <p class="reference"><span>参考价</span> <del>￥{{ commoditys.price|floatformat:'2' }}</del></p>
+              <p class="activity"><span>活动价</span><strong class="price"><i>￥</i>{{ commoditys.discount|floatformat:'2' }}</strong></p>
+              <p class="address-box"><span>送&nbsp;&nbsp;&nbsp;&nbsp;至</span><strong class="address">广东&nbsp;&nbsp;广州&nbsp;&nbsp;天河区</strong></p>
+            </div>
+            <div class="choose-attrs">
+              <div class="color layui-clear"><span class="title">规&nbsp;&nbsp;&nbsp;&nbsp;格</span> <div class="color-cont"><span class="btn active">{{ commoditys.sezes }}</span></div></div>
+              <div class="number layui-clear"><span class="title">数&nbsp;&nbsp;&nbsp;&nbsp;量</span><div class="number-cont">
+                  <span class="cut btn">-</span>
+                  <input onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" maxlength="4" type="" id="quantity" value="1">
+                  <span class="add btn">+</span></div></div>
+            </div>
+            <div class="choose-btns">
+              <a class="layui-btn  layui-btn-danger car-btn">
+                  <i class="layui-icon layui-icon-cart-simple"></i>加入购物车</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="layui-clear">
+        <div class="aside">
+          <h4>热销推荐</h4>
+          <div class="item-list">
+            {% for item in items %}
+            <div class="item">
+              <a href="{% url 'commodity:detail' item.id %}">
+              <img height="280" width="280" src="{{ item.img.url }}">
+              </a>
+              <p>
+                  <span title="{{ item.name }}">
+                      {% if item.name|length > 15 %}
+                        {{ item.name|slice:":15" }}...
+                      {% else %}
+                        {{ item.name|slice:":15" }}
+                      {% endif %}
+                  </span>
+                  <span class="pric">￥{{ item.discount|floatformat:'2' }}</span>
+              </p>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="detail">
+          <h4>详情</h4>
+          <div class="item">
+            <img width="800" src="{{ commoditys.details.url }}">
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock content %}
+
+{% block script %}
+  layui.config({
+    base: '{% static 'js/' %}'
+  }).use(['mm','jquery'],function(){
+      var mm = layui.mm,$ = layui.$;
+      var cur = $('.number-cont input').val();
+      $('.number-cont .btn').on('click',function(){
+        if($(this).hasClass('add')){
+          cur++;
+        }else{
+          if(cur > 1){
+            cur--;
+          }
+        }
+        $('.number-cont input').val(cur)
+      })
+
+    $('.layui-btn.layui-btn-danger.car-btn').on('click',function(){
+        var quantity = $("#quantity").val();
+        window.location = "{% url 'shopper:shopcart' %}?id={{ commoditys.id }}&quantity=" + quantity
+    });
+
+    $('#collect').on('click',function(){
+        var url = "{% url 'commodity:collect' %}?id={{ commoditys.id }}"
+        $.get(url ,function(data,status){
+            if (data.result=="收藏成功"){
+                $('#collect').find("i").removeClass("layui-icon-rate")
+                $('#collect').find("i").addClass("layui-icon-rate-solid")
+            }
+            alert(data.result);
+        });
+    });
+  });
+
+{% endblock script %}

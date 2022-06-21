@@ -3,7 +3,7 @@ from django.views.generic.base import TemplateView
 from commodity.models import *
 
 # Create your views here.
-connection = pymysql.connect(user='root', password='2547359996', db='babys')
+connection = pymysql.connect(user='root', password='2547359996', db='car')
 cursor = connection.cursor()
 
 
