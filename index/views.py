@@ -1,6 +1,7 @@
 import pymysql
 from django.views.generic.base import TemplateView
 
+from babys.settings import DATABASES
 from commodity.models import *
 
 
@@ -16,28 +17,20 @@ class indexClassView(TemplateView):
     def get_context_data(self, **kwargs):
         connection = pymysql.connect(user='root', password='2547359996', db='car')
         cursor = connection.cursor()
-
-        # 执行查询每个类目前5个商品的sql语句
+        # 执行查询某个类目前5个商品的sql语句
         def sqldoce(a):
             sql = f"select id,img " \
                   f"from commodity_limit5 " \
                   f"where firsts='{a}'".format(a=a)
             cursor.execute(sql)
             return cursor.fetchall()
-
         context = super().get_context_data(**kwargs)
         # 根据销量选出8个商品
         context['commodityInfos'] = CommodityInfos.objects.order_by('-sold').all()[:8]
-        # types = Types.objects.all()
-
         # 行车安全
-        # cl = [x.seconds for x in types if x.firsts == '行车安全']
-        # context['clothes'] = CommodityInfos.objects.filter(types__in=cl).order_by('-sold')[:5]
-        context['clothes'] = sqldoce('行车安全')
-
+        context['safe'] = sqldoce('行车安全')
         # 用车舒适
-        context['food'] = sqldoce('用车舒适')
-
+        context['comfortable'] = sqldoce('用车舒适')
         # 车内配件
         context['goods'] = sqldoce('车内配件')
         # 关闭游标和连接

@@ -92,7 +92,7 @@
                         </li>
                         <li class="th th-op">
                             <span class="dele-btn">删除</span>
-                            <p hidden="hidden">{{ c.id }}</p>
+                            <p class="comid" hidden="hidden">{{ c.id }}</p>
                         </li>
                     </ul>
                 {% endfor %}
@@ -104,7 +104,7 @@
             <div class="th th-chk">
                 <div class="select-all">
                     <div class="cart-checkbox">
-                        <input class="check-all check" id="" name="select-all" type="checkbox" value="true">
+                        <input class="check-all check" id="" name="select-allq" type="checkbox" value="true">
                     </div>
                     <label>&nbsp;&nbsp;已选<span class="Selected-pieces">0</span>件</label>
                 </div>
@@ -133,25 +133,30 @@
     $(function(){
     var counts = 0;
     $(".sum").each(function(i,e){
-    var quantity = $('.th-su')[i].innerHTML
-    var price = $('.Quantity-input')[i].value
+    var price = $('.th-su')[i].innerHTML
+    var quantity = $('.Quantity-input')[i].value
+    console.log($(".comid")[i].innerHTML)
     e.innerHTML = (quantity * price).toFixed(2)
     counts = counts*1 + e.innerHTML*1
     });
     $(".pieces-total").text("￥" + counts.toFixed(2))
+
+
     });
 
     $("#settlement").on('click',function(){
     var total = $(".pieces-total").text()
     var userId = $("#userId").text()
     {#    得到购买物品的id#}
+    {#    创建商品id数组#}
     var commodityId = new Array();
-    {% for c in commodityInfos %}
-        commodityId.push("{{ c.id }}");
-        console.log(commodityId)
-    {% endfor %}
 
-
+    {#    只获取勾选了的商品的id  #}
+    $("input[name='select-all']:checked").each(function(i){
+    let val = $(this).parents("ul").find('.comid').text();
+    {#    在数组末尾增加商品id#}
+    commodityId.push(val)
+    });
 
     window.location = "{% url 'shopper:pays' %}?total=" +
     total+"&userId="+$("#userId").text()+"&commodityId="+commodityId

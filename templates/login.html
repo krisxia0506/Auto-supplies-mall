@@ -11,14 +11,12 @@
                         <div class="layui-inline iphone">
                             <div class="layui-input-inline">
                                 <i class="layui-icon layui-icon-cellphone iphone-icon"></i>
-                                {#                  <input name="username" id="username" lay-verify="required|phone" placeholder="请输入手机号" class="layui-input">#}
                                 {{ infos.username }}
                             </div>
                         </div>
                         <div class="layui-inline iphone">
                             <div class="layui-input-inline">
                                 <i class="layui-icon layui-icon-password iphone-icon"></i>
-                                {#                  <input id="password" type="password" name="password" lay-verify="required|password" placeholder="请输入密码" class="layui-input">#}
                                 {{ infos.password }}
                             </div>
                         </div>
@@ -73,6 +71,7 @@
     layer.msg("请输入正确的手机号");
     return false;
     }
+
     })
     })
 {% endblock script %}

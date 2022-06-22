@@ -11,6 +11,8 @@ from alipay.aop.api.DefaultAlipayClient import DefaultAlipayClient
 from alipay.aop.api.domain.AlipayTradePagePayModel import AlipayTradePagePayModel
 from alipay.aop.api.request.AlipayTradePagePayRequest import AlipayTradePagePayRequest
 
+
+
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s %(levelname)s %(message)s',
@@ -47,5 +49,6 @@ def get_pay(out_trade_no, total_amount, return_url):
     request.notify_url = return_url + '?t=' + out_trade_no
     request.return_url = return_url + '?t=' + out_trade_no
     response = client.page_execute(request, http_method="GET")
+
 
     return response

@@ -70,7 +70,7 @@
                     {#            {% for c in clothes %}#}
                     {#              <a href="{% url 'commodity:detail' c.id %}"><img src="{{ c.img.url }}"></a>#}
                     {#            {% endfor %}#}
-                    {% for c in clothes %}
+                    {% for c in safe %}
                         <a href="{% url 'commodity:detail' c.0 %}"><img src="/media/{{ c.1 }}"></a>
                     {% endfor %}
                 </div>
@@ -88,7 +88,7 @@
                     {#            {% for f in food %}#}
                     {#            <a href="{% url 'commodity:detail' f.id %}"><img src="{{ f.img.url }}"></a>#}
                     {#            {% endfor %}#}
-                    {% for c in food %}
+                    {% for c in comfortable %}
                         <a href="{% url 'commodity:detail' c.0 %}"><img src="/media/{{ c.1 }}"></a>
                     {% endfor %}
                 </div>

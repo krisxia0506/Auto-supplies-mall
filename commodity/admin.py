@@ -6,9 +6,9 @@ from .models import *
 # admin.site.register(CommodityInfos)
 
 # 修改title和header
-admin.site.site_title = '母婴后台系统'
-admin.site.site_header = '母婴电商后台管理系统'
-admin.site.index_title = '母婴平台管理'
+admin.site.site_title = '汽车用品后台系统'
+admin.site.site_header = '汽车用品电商后台管理系统'
+admin.site.index_title = '汽车用品平台管理'
 
 
 @admin.register(Types)
@@ -65,7 +65,7 @@ class CommodityInfosAdmin(admin.ModelAdmin):
 
     # 在数据列表页设置显示的模型字段
     list_display = ['id', 'name', 'sezes', 'types', 'price', 'discount']
-    list_display.append('colored_name')
+    # list_display.append('colored_name')
 
     # 为数据列表页的字段id和name设置路由地址，该路由地址可进入数据修改页
     # list_display_links = ['id', 'name']

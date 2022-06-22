@@ -16,51 +16,6 @@ from .models import *
 from .pays_new import get_pay
 
 
-# def loginView(request):
-#     title = '用户登录'
-#     classContent = 'logins'
-#     if request.method == 'POST':
-#         username = request.POST.get('username', '')
-#         password = request.POST.get('password', '')
-#         if User.objects.filter(username=username):
-#             user = authenticate(username=username, password=password)
-#             if user:
-#                 login(request, user)
-#                 return redirect(reverse('shopper:shopper'))
-#         else:
-#             state = '注册成功'
-#             d = dict(username=username, password=password, is_staff=1, is_active=1)
-#             user = User.objects.create_user(**d)
-#             user.save()
-#     return render(request, 'login.html', locals())
-
-# def loginView(request):
-#     title = '用户登录'
-#     classContent = 'logins'
-#     if request.method == 'POST':
-#         infos = LoginForm(data=request.POST)
-#         if infos.is_valid():
-#             data = infos.cleaned_data
-#             username = data['username']
-#             password = data['password']
-#             if User.objects.filter(username=username):
-#                 user = authenticate(username=username, password=password)
-#                 if user:
-#                     login(request, user)
-#                     return redirect(reverse('shopper:shopper'))
-#             else:
-#                 state = '注册成功'
-#                 d = dict(username=username, password=password, is_staff=1, is_active=1)
-#                 user = User.objects.create_user(**d)
-#                 user.save()
-#         else:
-#             # 获取错误信息，并以JSON格式输出
-#             error_msg = infos.errors.as_json()
-#             print(error_msg)
-#     else:
-#         infos = LoginForm()
-#     return render(request, 'login.html', locals())
-
 def loginView(request):
     title = '用户登录'
     classContent = 'logins'
@@ -74,6 +29,8 @@ def loginView(request):
             if user:
                 login(request, user)
                 return redirect(reverse('shopper:shopper'))
+            else:
+                state = '密码错误'
         else:
             state = '注册成功'
             d = dict(username=username, password=password, is_staff=1, is_active=1)
@@ -84,6 +41,16 @@ def loginView(request):
     return render(request, 'login.html', locals())
 
 
+def deleteAPI(userId, commodityId):
+    result = {'state': 'success'}
+    if userId:
+        for c in commodityId.split(','):
+            CartInfos.objects.filter(user_id=userId, commodityInfos_id=c).delete()
+    else:
+        result = {'state': 'fail'}
+    return JsonResponse(result)
+
+
 @login_required(login_url='/shopper/login.html')
 def shopperView(request):
     title = '个人中心'
@@ -92,8 +59,15 @@ def shopperView(request):
     # 处理已支付的订单
     t = request.GET.get('t', '')
     payTime = request.session.get('payTime', '')
+    # 如果支付成功，则更新订单状态
     if t and payTime and t == payTime:
         payInfo = request.session.get('payInfo', '')
+        userId = request.session.get('userId', '')
+        commodityId = request.session.get('commodityId', '')
+        # 删除购物车中的商品，减少库存
+        for c in commodityId.split(','):
+            deleteAPI(userId, c)
+            commoditysql(c)
         OrderInfos.objects.create(**payInfo)
         del request.session['payTime']
         del request.session['payInfo']
@@ -133,19 +107,6 @@ def shopcartView(request):
     return render(request, 'shopcart.html', locals())
 
 
-def deleteAPI(request):
-    result = {'state': 'success'}
-    userId = request.GET.get('userId', '')
-    commodityId = request.GET.get('commodityId', '')
-    if userId:
-        CartInfos.objects.filter(user_id=userId).delete()
-    elif commodityId:
-        CartInfos.objects.filter(commodityInfos_id=commodityId).delete()
-    else:
-        result = {'state': 'fail'}
-    return JsonResponse(result)
-
-
 # 执行sql结算的物品库存减一
 def commoditysql(commodity):
     connection = pymysql.connect(user='root', password='2547359996', db='car')
@@ -156,26 +117,26 @@ def commoditysql(commodity):
     print(sql)
     cursor.execute(sql)
     connection.commit()
-    print('ok')
     cursor.close()
     connection.close()
 
 
 def paysView(request):
+    # deleteAPI(request)
     total = request.GET.get('total', 0)
     userId = request.user.id
     commodityId = request.GET.get('commodityId', '')
-
+    print('paysView:' + commodityId)
     total = float(str(total).replace('￥', ''))
     if total:
         out_trade_no = str(int(time.time()))
         payInfo = dict(price=total, user_id=request.user.id, state='已支付')
         request.session['payInfo'] = payInfo
         request.session['payTime'] = out_trade_no
+        request.session['commodityId'] = commodityId
+        request.session['userId'] = userId
         return_url = 'http://' + request.get_host() + '/shopper.html'
         url = get_pay(out_trade_no, total, return_url)
-        for commodity in commodityId.split(','):
-            commoditysql(commodity)
         return redirect(url)
     else:
         return redirect('shopper:shopcart')

@@ -29,7 +29,6 @@ def commodityView(request):
     s = request.GET.get('s', 'sold')
     p = request.GET.get('p', 1)
     n = request.GET.get('n', '')
-
     # 根据请求参数查询商品信息
     commodityInfos = CommodityInfos.objects.all()
     if t:
