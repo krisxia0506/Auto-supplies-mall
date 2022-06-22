@@ -6,28 +6,6 @@ from commodity.models import *
 
 # Create your views here.
 
-
-# def indexView(request):
-#     title = '首页'
-#     classContent = ''
-#     # 根据销量选出8个商品
-#     commodityInfos = CommodityInfos.objects.order_by('-sold').all()[:8]
-#
-#     types = Types.objects.all()
-#     # 行车安全
-#     # cl = [x.seconds for x in types if x.firsts == '行车安全']
-#     # clothes = CommodityInfos.objects.filter(types__in=cl).order_by('-sold')[:5]
-#
-#     clothess = sqldoce('行车安全')
-#
-#     # 用车舒适
-#     food = sqldoce('用车舒适')
-#
-#     # 车内配件
-#     goods = food = sqldoce('车内配件')
-#     return render(request, 'index.html', locals())
-
-
 class indexClassView(TemplateView):
     template_name = 'index.html'
     template_engine = None
@@ -41,15 +19,16 @@ class indexClassView(TemplateView):
 
         # 执行查询每个类目前5个商品的sql语句
         def sqldoce(a):
-            sql = f"select id,img from commodity_limit5 where firsts='{a}'"
+            sql = f"select id,img " \
+                  f"from commodity_limit5 " \
+                  f"where firsts='{a}'".format(a=a)
             cursor.execute(sql)
-
             return cursor.fetchall()
 
         context = super().get_context_data(**kwargs)
         # 根据销量选出8个商品
         context['commodityInfos'] = CommodityInfos.objects.order_by('-sold').all()[:8]
-        types = Types.objects.all()
+        # types = Types.objects.all()
 
         # 行车安全
         # cl = [x.seconds for x in types if x.firsts == '行车安全']
@@ -61,7 +40,7 @@ class indexClassView(TemplateView):
 
         # 车内配件
         context['goods'] = sqldoce('车内配件')
-
+        # 关闭游标和连接
         cursor.close()
         connection.close()
         return context

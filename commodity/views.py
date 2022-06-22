@@ -33,6 +33,8 @@ def commodityView(request):
     # 根据请求参数查询商品信息
     commodityInfos = CommodityInfos.objects.all()
     if t:
+        # 在这把n置零，就能解决搜索后去类目没有商品的问题
+        n = 0
         types = Types.objects.filter(id=t).first()
         commodityInfos = commodityInfos.filter(types=types.seconds)
     if s:
