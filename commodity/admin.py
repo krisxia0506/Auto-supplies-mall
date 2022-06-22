@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from .models import *
 
 # admin.site.register(Types)
@@ -9,11 +10,13 @@ admin.site.site_title = '母婴后台系统'
 admin.site.site_header = '母婴电商后台管理系统'
 admin.site.index_title = '母婴平台管理'
 
+
 @admin.register(Types)
 class TypesAdmin(admin.ModelAdmin):
     list_display = [x for x in list(Types._meta._forward_fields_map.keys())]
     search_fields = ['firsts', 'seconds']
     list_filter = ['firsts']
+
 
 # @admin.register(CommodityInfos)
 # class CommodityInfosAdmin(admin.ModelAdmin):
@@ -37,7 +40,7 @@ class CommodityInfosAdmin(admin.ModelAdmin):
     # 改变数据新增页或数据修改页的网页布局
     fieldsets = (
         ('商品信息', {
-            'fields': ('name','sezes','types','price','discount')
+            'fields': ('name', 'sezes', 'types', 'price', 'discount')
         }),
         ('收藏数量', {
             # 设置隐藏与显示
@@ -94,15 +97,14 @@ class CommodityInfosAdmin(admin.ModelAdmin):
 
     def formfield_for_dbfield(self, db_field, **kwargs):
         if db_field.name == 'types':
-            db_field.choices = [(x['seconds'], x['seconds'])for x in Types.objects.values('seconds')]
+            db_field.choices = [(x['seconds'], x['seconds']) for x in Types.objects.values('seconds')]
         return super().formfield_for_dbfield(db_field, **kwargs)
-
 
     # 数据批量操作
     def get_datas(self, request, queryset):
         temp = []
         for d in queryset:
-            t=[d.name,d.types,str(d.discount)]
+            t = [d.name, d.types, str(d.discount)]
             temp.append(t)
         f = open('d://data.txt', 'a')
         for t in temp:
@@ -115,4 +117,3 @@ class CommodityInfosAdmin(admin.ModelAdmin):
     get_datas.short_description = '导出所选数据'
     # 添加到“动作”栏
     actions = ['get_datas']
-

@@ -5,6 +5,7 @@
 
 
 import logging
+
 from alipay.aop.api.AlipayClientConfig import AlipayClientConfig
 from alipay.aop.api.DefaultAlipayClient import DefaultAlipayClient
 from alipay.aop.api.domain.AlipayTradePagePayModel import AlipayTradePagePayModel

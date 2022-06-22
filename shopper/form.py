@@ -36,11 +36,11 @@ class LoginModelForm(forms.ModelForm):
         # 定义widgets，设置表单字段对应HTML元素控件的属性
         widgets = {
             'username': forms.widgets.TextInput(
-                                   attrs={'class': 'layui-input', 'placeholder': '请您输入手机号',
-                                          'lay-verify': 'required|phone', 'id': 'username'}),
+                attrs={'class': 'layui-input', 'placeholder': '请您输入手机号',
+                       'lay-verify': 'required|phone', 'id': 'username'}),
             'password': forms.widgets.PasswordInput(
-                                   attrs={'class': 'layui-input', 'placeholder': '请您输入密码',
-                                          'lay-verify': 'required|password', 'id': 'password'})
+                attrs={'class': 'layui-input', 'placeholder': '请您输入密码',
+                       'lay-verify': 'required|password', 'id': 'password'})
         }
 
     # 自定义表单字段username的数据清洗

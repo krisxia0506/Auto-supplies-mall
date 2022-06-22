@@ -1,18 +1,19 @@
+import time
+
 import pymysql
-from django.shortcuts import render, redirect
-from .models import *
-from commodity.models import *
-from django.http import JsonResponse
-from django.core.paginator import Paginator
+from django.contrib.auth import logout, login, authenticate
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import EmptyPage
 from django.core.paginator import PageNotAnInteger
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout, login, authenticate
-from django.contrib.auth.models import User
+from django.core.paginator import Paginator
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
 from django.shortcuts import reverse
+
+from commodity.models import *
 from .form import *
+from .models import *
 from .pays_new import get_pay
-import time
 
 
 # def loginView(request):
@@ -144,6 +145,7 @@ def deleteAPI(request):
         result = {'state': 'fail'}
     return JsonResponse(result)
 
+
 # 执行sql结算的物品库存减一
 def commoditysql(commodity):
     connection = pymysql.connect(user='root', password='2547359996', db='car')
@@ -163,7 +165,6 @@ def paysView(request):
     total = request.GET.get('total', 0)
     userId = request.user.id
     commodityId = request.GET.get('commodityId', '')
-
 
     total = float(str(total).replace('￥', ''))
     if total:

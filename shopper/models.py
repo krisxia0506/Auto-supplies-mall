@@ -8,6 +8,7 @@ STATE = (
     ('退货中', '退货中'),
 )
 
+
 class CartInfos(models.Model):
     id = models.AutoField(primary_key=True)
     quantity = models.IntegerField('购买数量')
@@ -20,6 +21,7 @@ class CartInfos(models.Model):
     class Meta:
         verbose_name = '购物车'
         verbose_name_plural = '购物车'
+
 
 class OrderInfos(models.Model):
     id = models.AutoField(primary_key=True)

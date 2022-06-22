@@ -14,6 +14,7 @@ class Types(models.Model):
         verbose_name = '商品类型'
         verbose_name_plural = '商品类型'
 
+
 class CommodityInfos(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField('商品名称', max_length=100)
@@ -46,5 +47,6 @@ class CommodityInfos(models.Model):
             color_code,
             self.types,
         )
+
     # 设置Admin的字段名称
     colored_name.short_description = '带颜色的商品类型'

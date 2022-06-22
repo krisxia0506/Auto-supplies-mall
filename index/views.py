@@ -1,18 +1,10 @@
 import pymysql
 from django.views.generic.base import TemplateView
+
 from commodity.models import *
 
+
 # Create your views here.
-connection = pymysql.connect(user='root', password='2547359996', db='car')
-cursor = connection.cursor()
-
-
-# 执行查询每个类目前5个商品的sql语句
-def sqldoce(a):
-    sql = f"select id,img from commodity_limit5 where firsts='{a}'"
-    cursor.execute(sql)
-
-    return cursor.fetchall()
 
 
 # def indexView(request):
@@ -44,6 +36,16 @@ class indexClassView(TemplateView):
 
     # 重新定义模板上下文的获取方式
     def get_context_data(self, **kwargs):
+        connection = pymysql.connect(user='root', password='2547359996', db='car')
+        cursor = connection.cursor()
+
+        # 执行查询每个类目前5个商品的sql语句
+        def sqldoce(a):
+            sql = f"select id,img from commodity_limit5 where firsts='{a}'"
+            cursor.execute(sql)
+
+            return cursor.fetchall()
+
         context = super().get_context_data(**kwargs)
         # 根据销量选出8个商品
         context['commodityInfos'] = CommodityInfos.objects.order_by('-sold').all()[:8]
@@ -79,4 +81,3 @@ class indexClassView(TemplateView):
         pass
         context = self.get_context_data(**kwargs)
         return self.render_to_response(context)
-

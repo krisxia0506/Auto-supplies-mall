@@ -1,48 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	{% load static %}
-	<title>{{title}}</title>
-	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'layui/css/layui.css' %}">
-	<script type="text/javascript" src="{% static 'layui/layui.js' %}"></script>
+    {% load static %}
+    <title>{{ title }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'layui/css/layui.css' %}">
+    <script type="text/javascript" src="{% static 'layui/layui.js' %}"></script>
 </head>
 <body>
-  <div class="header">
+<div class="header">
     <div class="headerLayout w1200">
-      <div class="headerCon">
-        <h1 class="mallLogo">
-          <a href="{% url 'index:index' %}" title="汽车用品商城">
-            <img src="{% static 'img/logo.svg' %}">
-          </a>
-        </h1>
-        <div class="mallSearch">
-          <form action="{% url 'commodity:commodity' %}" method="get" class="layui-form" novalidate>
-            <input type="text" name="n" required  lay-verify="required" autocomplete="off" class="layui-input" placeholder="请输入需要的商品">
-            <button class="layui-btn" lay-submit lay-filter="formDemo">
-                <i class="layui-icon layui-icon-search"></i>
-            </button>
-          </form>
+        <div class="headerCon">
+            <h1 class="mallLogo">
+                <a href="{% url 'index:index' %}" title="汽车用品商城">
+                    <img src="{% static 'img/logo.svg' %}">
+                </a>
+            </h1>
+            <div class="mallSearch">
+                <form action="{% url 'commodity:commodity' %}" method="get" class="layui-form" novalidate>
+                    <input type="text" name="n" required lay-verify="required" autocomplete="off" class="layui-input"
+                           placeholder="请输入需要的商品">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">
+                        <i class="layui-icon layui-icon-search"></i>
+                    </button>
+                </form>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</div>
 
-  <div class="content content-nav-base {{classContent}}">
+<div class="content content-nav-base {{ classContent }}">
     <div class="main-nav">
-      <div class="inner-cont0">
-        <div class="inner-cont1 w1200">
-          <div class="inner-cont2">
-            <a href="{% url 'index:index' %}" {% if classContent == ''%}class="active"{% endif %}>首页</a>
-			<a href="{% url 'commodity:commodity' %}" {% if classContent == 'commoditys'%}class="active"{% endif %}>所有商品</a>
-			<a href="{% url 'shopper:shopcart' %}" {% if classContent == 'shopcarts'%}class="active"{% endif %}>购物车</a>
-            <a href="{% url 'shopper:shopper' %}" {% if classContent == 'informations'%}class="active"{% endif %}>个人中心</a>
-          </div>
+        <div class="inner-cont0">
+            <div class="inner-cont1 w1200">
+                <div class="inner-cont2">
+                    <a href="{% url 'index:index' %}" {% if classContent == '' %}class="active"{% endif %}>首页</a>
+                    <a href="{% url 'commodity:commodity' %}"
+                       {% if classContent == 'commoditys' %}class="active"{% endif %}>所有商品</a>
+                    <a href="{% url 'shopper:shopcart' %}"
+                       {% if classContent == 'shopcarts' %}class="active"{% endif %}>购物车</a>
+                    <a href="{% url 'shopper:shopper' %}"
+                       {% if classContent == 'informations' %}class="active"{% endif %}>个人中心</a>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-	{% block content %}{% endblock content %}
-  </div>
+    {% block content %}{% endblock content %}
+</div>
 
 {% block footer %}{% endblock footer %}
 <script type="text/javascript">{% block script %}{% endblock script %}</script>
