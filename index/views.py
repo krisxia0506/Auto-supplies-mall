@@ -17,7 +17,7 @@ class indexClassView(TemplateView):
     def get_context_data(self, **kwargs):
         connection = pymysql.connect(user='root', password='2547359996', db='car')
         cursor = connection.cursor()
-        # 执行查询某个类目前5个商品的sql语句
+        # 执行查询视图某个类目前5个商品的sql语句
         def sqldoce(a):
             sql = f"select id,img " \
                   f"from commodity_limit5 " \
@@ -25,8 +25,13 @@ class indexClassView(TemplateView):
             cursor.execute(sql)
             return cursor.fetchall()
         context = super().get_context_data(**kwargs)
+        # 调用存储过程
+        def sqlprocedure():
+            sql = "call commodity_sold_procedure()"
+            cursor.execute(sql)
+            return cursor.fetchall()
         # 根据销量选出8个商品
-        context['commodityInfos'] = CommodityInfos.objects.order_by('-sold').all()[:8]
+        context['commodityInfos'] = sqlprocedure()
         # 行车安全
         context['safe'] = sqldoce('行车安全')
         # 用车舒适

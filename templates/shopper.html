@@ -85,7 +85,7 @@
                 {% endfor %}
 
                 {% if pages.has_next %}
-                    <a href="{% url 'shopper:shopper' %}?p={{ pages.pages.next_page_number }}"
+                    <a href="{% url 'shopper:shopper' %}?p={{ pages.next_page_number }}"
                        class="layui-laypage-next">下一页</a>
                 {% endif %}
             </div>

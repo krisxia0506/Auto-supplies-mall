@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'babys.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'babys',
+        'NAME': 'car',
         'USER': 'root',
         'PASSWORD': '2547359996',
         'HOST': '127.0.0.1',

@@ -41,7 +41,7 @@ def loginView(request):
     return render(request, 'login.html', locals())
 
 
-def deleteAPI(userId, commodityId):
+def deletecarAPI(userId, commodityId):
     result = {'state': 'success'}
     if userId:
         for c in commodityId.split(','):
@@ -66,7 +66,7 @@ def shopperView(request):
         commodityId = request.session.get('commodityId', '')
         # 删除购物车中的商品，减少库存
         for c in commodityId.split(','):
-            deleteAPI(userId, c)
+            deletecarAPI(userId, c)
             commoditysql(c)
         OrderInfos.objects.create(**payInfo)
         del request.session['payTime']
@@ -140,3 +140,15 @@ def paysView(request):
         return redirect(url)
     else:
         return redirect('shopper:shopcart')
+
+def deleteAPI(request):
+    result = {'state': 'success'}
+    userId = request.GET.get('userId', '')
+    commodityId = request.GET.get('commodityId', '')
+    if userId:
+        CartInfos.objects.filter(user_id=userId).delete()
+    elif commodityId:
+        CartInfos.objects.filter(commodityInfos_id=commodityId).delete()
+    else:
+        result = {'state': 'fail'}
+    return JsonResponse(result)

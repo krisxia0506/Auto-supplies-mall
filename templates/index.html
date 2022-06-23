@@ -23,12 +23,12 @@
                                 {% for c in commodityInfos %}
                                     {% if forloop.counter < 5 %}
                                         <div class="item">
-                                            <a href="{% url 'commodity:detail' c.id %}">
-                                                <img src="{{ c.img.url }}"></a>
-                                            <div class="title">{{ c.name }}</div>
+                                            <a href="{% url 'commodity:detail' c.0 %}">
+                                                <img src="/media/{{ c.1 }}"></a>
+                                            <div class="title">{{ c.2 }}</div>
                                             <div class="price">
-                                                <span>￥{{ c.discount|floatformat:'2' }}</span>
-                                                <del>￥{{ c.price|floatformat:'2' }}</del>
+                                                <span>￥{{ c.3|floatformat:'2' }}</span>
+                                                <del>￥{{ c.4|floatformat:'2' }}</del>
                                             </div>
                                         </div>
                                     {% endif %}
@@ -39,12 +39,12 @@
                                 {% for c in commodityInfos %}
                                     {% if forloop.counter > 4 %}
                                         <div class="item">
-                                            <a href="{% url 'commodity:detail' c.id %}">
-                                                <img src="{{ c.img.url }}"></a>
-                                            <div class="title">{{ c.name }}</div>
+                                            <a href="{% url 'commodity:detail' c.0 %}">
+                                                <img src="/media/{{ c.1 }}"></a>
+                                            <div class="title">{{ c.2 }}</div>
                                             <div class="price">
-                                                <span>￥{{ c.discount|floatformat:'2' }}</span>
-                                                <del>￥{{ c.price|floatformat:'2' }}</del>
+                                                <span>￥{{ c.3|floatformat:'2' }}</span>
+                                                <del>￥{{ c.4|floatformat:'2' }}</del>
                                             </div>
                                         </div>
                                     {% endif %}
