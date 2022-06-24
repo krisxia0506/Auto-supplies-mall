@@ -41,10 +41,12 @@ def commodityView(request):
     if n:
         commodityInfos = commodityInfos.filter(name__contains=n)
     # 分页功能
+    # 创建一个Paginator实例对象
+    # 对数据进行分页 Paginator(commodityInfos, i) commodityInfos：列表或结果集， i: 每页显示的数据是多少
     paginator = Paginator(commodityInfos, 6)
     try:
+        # 获取第p页的结果集
         pages = paginator.page(p)
-
     except PageNotAnInteger:
         pages = paginator.page(1)
     except EmptyPage:
@@ -63,3 +65,4 @@ def collectView(request):
         result['result'] = "收藏成功"
         request.session['likes'] = likes + [int(id)]
     return JsonResponse(result)
+# likes = 1,2,3,4，5,6,7,8,9,10，11

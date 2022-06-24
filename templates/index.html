@@ -67,9 +67,6 @@
             <div class="right-cont">
                 <a href="javascript:;" class="top-img"><img src="{% static 'img/img12.jpg' %}" alt=""></a>
                 <div class="img-box">
-                    {#            {% for c in clothes %}#}
-                    {#              <a href="{% url 'commodity:detail' c.id %}"><img src="{{ c.img.url }}"></a>#}
-                    {#            {% endfor %}#}
                     {% for c in safe %}
                         <a href="{% url 'commodity:detail' c.0 %}"><img src="/media/{{ c.1 }}"></a>
                     {% endfor %}
