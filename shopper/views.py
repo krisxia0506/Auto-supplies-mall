@@ -122,7 +122,7 @@ def commoditysql(commodity):
 
 
 def paysView(request):
-    # deleteAPI(request)
+
     total = request.GET.get('total', 0)
     userId = request.user.id
     commodityId = request.GET.get('commodityId', '')

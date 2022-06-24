@@ -134,5 +134,5 @@ layui.define(['layer'], function (exports) {
             checkAll[0].onclick();
         }
     }
-    exports('babys', car)
+    exports('car', car)
 }); 

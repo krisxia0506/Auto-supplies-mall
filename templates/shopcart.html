@@ -74,7 +74,7 @@
                             </div>
                         </li>
                         <li class="th th-price">
-                            <span class="th-su">{{ c.price }}</span>
+                            <span class="th-su">{{ c.discount }}</span>
                         </li>
                         <li class="th th-amount">
                             <div class="box-btn layui-clear">
@@ -147,14 +147,14 @@
     $("#settlement").on('click',function(){
     var total = $(".pieces-total").text()
     var userId = $("#userId").text()
-    {#    得到购买物品的id#}
-    {#    创建商品id数组#}
+{#        得到购买物品的id#}
+{#        创建商品id数组#}
     var commodityId = new Array();
 
-    {#    只获取勾选了的商品的id  #}
+{#        只获取勾选了的商品的id#}
     $("input[name='select-all']:checked").each(function(i){
     let val = $(this).parents("ul").find('.comid').text();
-    {#    在数组末尾增加商品id#}
+{#        在数组末尾增加商品id#}
     commodityId.push(val)
     });
 
